@@ -34,6 +34,7 @@ namespace TicTacToe
                     else if (ComboBoxCrossOrNought.Text == "Noughts")
                         window.Cross = false;
                     window.ShowDialog();
+                    this.Close();
                 }
                 else
                 {
@@ -44,6 +45,12 @@ namespace TicTacToe
             {
                 errorProvider1.SetError(NickNameBox, "You have to state your nickname.");
             }
+        }
+
+        private void Closing(object sender, FormClosedEventArgs e)
+        {
+            if (Application.OpenForms.Count == 0)
+                Application.Exit();
         }
     }
 }

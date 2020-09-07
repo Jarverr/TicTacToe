@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace TicTacToe
             Form1 OpeningWindow = new Form1();
             OpeningWindow.ShowDialog();
             OpeningWindow.Closed += (s, args) => this.Close();
+            this.Close();
         }
 
         private void TicTacToe_Load(object sender, EventArgs e)
@@ -169,14 +171,12 @@ namespace TicTacToe
             {
                 if (Mesh1.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
 
@@ -185,14 +185,12 @@ namespace TicTacToe
             {
                 if (Mesh2.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information); 
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
@@ -200,14 +198,13 @@ namespace TicTacToe
             {
                 if (Mesh3.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
 
@@ -216,14 +213,13 @@ namespace TicTacToe
             {
                 if (Mesh1.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
@@ -231,14 +227,13 @@ namespace TicTacToe
             {
                 if (Mesh4.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
@@ -246,14 +241,13 @@ namespace TicTacToe
             {
                 if (Mesh7.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
@@ -261,14 +255,13 @@ namespace TicTacToe
             {
                 if (Mesh1.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
@@ -276,18 +269,37 @@ namespace TicTacToe
             {
                 if (Mesh3.Text == " X ")
                 {
-                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(true);
+
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RemoveEvents();
+                    DisplayEndingCommiunicate(false);
                     return true;
                 }
             }
             return false;
+
+            void DisplayEndingCommiunicate(bool crossWon)
+            {
+                if(crossWon)
+                    MessageBox.Show("CROSSES HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                else
+                    MessageBox.Show("NOUGHTS HAS WON", "End Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RemoveEvents();
+                if (Cross)
+                {
+                    WriteToFile("victory");
+                    WriteToDB("victory");
+                }
+                else
+                {
+                    WriteToFile("defeat");
+                    WriteToDB("defeat");
+                }
+            }
             void RemoveEvents() 
             {
                 Mesh1.Click -= Mesh_Clicked;
@@ -300,6 +312,35 @@ namespace TicTacToe
                 Mesh8.Click -= Mesh_Clicked;
                 Mesh9.Click -= Mesh_Clicked;
             }
+        }
+        void WriteToDB(string whoWon)
+        {
+            var db = new PlayerResults();
+            if (whoWon.Contains("v"))
+                db.GamesResult.Add(new Player() { Name = Nickname, Status = true, date = DateTime.Now });
+            else
+                db.GamesResult.Add(new Player() { Name = Nickname, Status = false, date = DateTime.Now });
+            db.SaveChanges();
+        }
+        void WriteToFile(string whoWon)
+        {
+            //if (!File.Exists("../../GameResults"))
+            //{
+            //    using (StreamReader sr = new StreamReader("../.."))
+            //        Directory.CreateDirectory("GameResults");
+                
+            //}
+        
+            using (var file = new StreamWriter($"../../GameResults/Results{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}.txt", true))
+            {
+                file.WriteLine("Nick: {0}, Result: {1}, Data: {2}", Nickname, whoWon, DateTime.Now);
+            }
+        }
+
+        private void Closing(object sender, FormClosedEventArgs e)
+        {
+            if (Application.OpenForms.Count == 0)
+                Application.Exit();
         }
     }
 }

@@ -1,0 +1,5 @@
+Nick: sf, Result: victory, Data:07.09.2020 21:06:49
+Nick: dsf, Result: victory, Data:07.09.2020 21:07:09
+Nick: fsf, Result: defeat, Data:07.09.2020 21:07:16
+Nick: c, Result: victory, Data: 07.09.2020 21:33:09
+Nick: g, Result: victory, Data: 07.09.2020 21:36:00

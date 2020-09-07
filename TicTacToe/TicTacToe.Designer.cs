@@ -130,7 +130,6 @@
             this.Mesh1.TabIndex = 7;
             this.Mesh1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Mesh1.Click += new System.EventHandler(this.Mesh_Clicked);
-            this.Mesh1.TextChanged += new System.EventHandler(this.TicTacToe_Load);
             // 
             // Mesh5
             // 
@@ -272,6 +271,7 @@
             this.Controls.Add(this.button1);
             this.Name = "TicTacToe";
             this.Text = "TicTacToe";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Closing);
             this.Load += new System.EventHandler(this.TicTacToe_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
